@@ -47,7 +47,8 @@ handler.on('gollum', function (event) {
 }) 
  
 handler.on('push', function (event) {
-  send_notification("[push] " + event.payload['pusher']['name'] + " " + event.payload['commits'].length + " commit(s)") 
+  head_commit = event.payload['head_commit'] 
+  send_notification("[push] " + event.payload['pusher']['name'] + " " + event.payload['commits'].length + " commit(s)" + " " + head_commit['message'] + " " + event.payload['compare']) 
 
 })
 
@@ -60,27 +61,9 @@ handler.on('commit', function (event) {
 })
 
  
-/*
-handler.on('issues', function (event) {
-  console.log('Received an issue event for %s action=%s: #%d %s',
-    event.payload.repository.name,
-    event.payload.action,
-    event.payload.issue.number,
-    event.payload.issue.title)
-        var st = new ltx.Element(
-            'message',
-            { to: "mu2ch@conference.jabber.ru", type: 'groupchat' }
-        ).c('body').t("NEW ISSUE")
-        client.send(st)
-
-})
-*/
-
 var Client = require('node-xmpp-client')
   , argv = process.argv
   , ltx = require('ltx')
-
-var fifo = require('fifo')();
 
 var client = new Client({
     jid: "github@wtfismyip.com",
@@ -105,20 +88,6 @@ setInterval(function () {
 var c  = 0
 client.on('stanza', function(stanza) {
     console.log('Received stanza: ', c++, stanza.toString())
-    /*
-    if (stanza.is('message') && stanza.attrs.type === 'groupchat') {
-        if (stanza.attrs.from == "mu2ch@conference.jabber.ru/github-bot") {
-                client.end() 
-        }
-
-        var st = new ltx.Element(
-            'message',
-            { to: "mu2ch@conference.jabber.ru", type: 'groupchat' }
-        ).c('body').t(argv[2])
-        client.send(st)
-
-    } 
-    */
 })
 
 client.on('online', function() {
