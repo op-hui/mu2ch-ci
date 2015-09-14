@@ -27,13 +27,16 @@ handler.on('issue_comment', function (event) {
   issue = event.payload['issue']
   comment = event.payload['comment']
   sender = event.payload['sender']['login']
-  send_notification("[issues] " + sender + " comment # " + issue['number'] + " " +  issue['title'] + " " + comment['html_url'])
-  console.log('issue_comment ' + JSON.stringify(event.payload));
+  send_notification("[issues] " + sender + " comment " + "issue: #" + issue['number'] + " " +  issue['title'] + " " + comment['html_url'] + "\r\n" + issue['body'])
 })
 
 handler.on('issues', function (event) {
   issue = event.payload['issue']
-  send_notification("[issues] " + event.payload['sender']['login']+ " " + event.payload['action'] + " # " + issue['number'] + " " +  issue['title'] + " " + issue['html_url'])
+  if (event.payload['action'] == 'opened') {
+        send_notification("[issues] " + event.payload['sender']['login']+ " " + event.payload['action'] + " # " + issue['number'] + " " +  issue['title'] + " " + issue['html_url'] + "\r\n " + issue['body'])
+  else {
+        send_notification("[issues] " + event.payload['sender']['login']+ " " + event.payload['action'] + " # " + issue['number'] + " " +  issue['title'] + " " + issue['html_url'] + "\r\n ")
+  } 
   
 })
 
@@ -66,9 +69,9 @@ var Client = require('node-xmpp-client')
   , ltx = require('ltx')
 
 var client = new Client({
-    jid: "github@wtfismyip.com",
+    jid: "",
     password: '',
-    host:'wtfismyip.com',
+    host:'',
     reconnect: true
 })
 
