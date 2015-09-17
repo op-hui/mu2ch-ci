@@ -33,8 +33,7 @@ handler.on('issue_comment', function (event) {
 handler.on('issues', function (event) {
   issue = event.payload['issue']
   if (event.payload['action'] == 'opened') {
-        send_notification("[issues] " + event.payload['sender']['login']+ " " + event.payload['action'] + " # " + issue['number'] + " " +  issue['title'] + " " + issue['html_url'] + "\r\n " + issue['body'])
-  else {
+        send_notification("[issues] " + event.payload['sender']['login']+ " " + event.payload['action'] + " # " + issue['number'] + " " +  issue['title'] + " " + issue['html_url'] + "\r\n " + issue['body']) } else {
         send_notification("[issues] " + event.payload['sender']['login']+ " " + event.payload['action'] + " # " + issue['number'] + " " +  issue['title'] + " " + issue['html_url'] + "\r\n ")
   } 
   
@@ -69,7 +68,7 @@ var Client = require('node-xmpp-client')
   , ltx = require('ltx')
 
 var client = new Client({
-    jid: "",
+    jid: '',
     password: '',
     host:'',
     reconnect: true
